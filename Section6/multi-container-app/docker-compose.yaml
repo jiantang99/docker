@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  mongodb:
+    image: 'mongo'
+    # can be image name, or custom image name/url
+    volumes:
+      - data:/data/db
+    environment:
+      - MONGO_USERNAME = julian
+      - MONGO_PASSWORD = pw
+    # env_file:
+    #   - ./env/mongo.env
+  backend:
+  frontend:
+
+
+volumes:
+  data:
+
+
