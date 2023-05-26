@@ -8,13 +8,39 @@ services:
     environment:
       - MONGO_USERNAME = julian
       - MONGO_PASSWORD = pw
+    container_name: mongodb
     # env_file:
     #   - ./env/mongo.env
   backend:
+    build: ./backend
+    # build:
+    #   context: ./backend
+    #   dockerfile: Dockerfile
+    #   args:
+    #     some_arg: 1
+    ports:
+      - '80:80'
+    volumes:
+      - 'logs:/app/logs' # named volume
+      - ./backend:/app # bind mount only need relative path inside docker compose file
+      - /app/node_modules # anonymous volume
+    container_name: backend
+    depends_on:
+      - mongodb
   frontend:
-
-
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    # to set container in interactive mode, will still received input if compose run in detached mode
+    container_name: frontend
+    depends_on:
+      - backend
 volumes:
   data:
+  logs:
 
 
