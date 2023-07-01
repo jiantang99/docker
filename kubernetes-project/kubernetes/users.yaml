@@ -17,7 +17,7 @@ spec:
   storageClassName: efs-sc
   csi:
     driver: efs.csi.aws.com
-    volumeHandle: <efs id>
+    volumeHandle: <efs file system id>
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -66,3 +66,10 @@ spec:
               value: "mongo URI"
             - name: AUTH_API_ADDRESSS
               value: "auth-service.default:3000"
+          volumeMounts:
+            - name: efs-vol
+              mountPath: /app/users
+      volumes:
+        - name: efs-vol
+          persistentVolumeClaim:
+            claimName: efs-pvc
